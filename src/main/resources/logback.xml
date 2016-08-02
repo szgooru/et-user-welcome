@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender" target="System.out">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SUCCESS_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>et-user-welcome-success.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>et-user-welcome-success.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="FAILURE_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>et-user-welcome-fail.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>et-user-welcome-fail.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.gooru.nucleus" level="debug" additivity = "false">
+        <appender-ref ref="SUCCESS_LOG" />           
+    </logger>
+    
+    <logger name="org.gooru.nucleus.etuser.failure" level="debug" additivity="false">
+        <appender-ref ref="FAILURE_LOG" />           
+    </logger>
+
+    <root level="info">
+    </root>
+</configuration>
