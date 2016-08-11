@@ -23,7 +23,9 @@ public class EmailProcessorFinal {
     private final String url;
     private final String token;
     private final JsonObject defaultRequest;
-
+    int successCnt = 0;
+    int failedCnt = 0;
+    
     public EmailProcessorFinal() {
         this.url = ApplicationRegistry.getInstance().getEmailUrl();
         this.token = ApplicationRegistry.getInstance().getAuthToken();
@@ -33,6 +35,7 @@ public class EmailProcessorFinal {
     public void process() {
         Set<String> emailIds = getEmailIds();
         LOGGER.debug("started processing emails");
+        
         emailIds.forEach(email -> {
             String data = generateEmailRequest(email).toString();
             try {
@@ -41,13 +44,17 @@ public class EmailProcessorFinal {
 
                 if (responseCode == 200) {
                     LOGGER.info("SUCCESS : email sent to {}", email);
+                    successCnt++;
                 } else {
                     LOGGER_FAIL.error("FAIL : failed to send to {} with status code {}", email, responseCode);
+                    failedCnt++;
                 }
             } catch (Throwable t) {
                 LOGGER.error("error while sending email to {}", email, t);
             }
         });
+        
+        LOGGER.info("Email Sent FINISH: Success({}), Failed ({})", successCnt, failedCnt);
     }
 
     private JsonObject generateEmailRequest(String email) {
