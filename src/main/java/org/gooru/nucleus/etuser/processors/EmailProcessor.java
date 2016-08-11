@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.gooru.nucleus.etuser.app.components.ApplicationRegistry;
 import org.slf4j.Logger;
@@ -20,6 +22,7 @@ public class EmailProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailProcessor.class);
     private static final Logger LOGGER_FAIL = LoggerFactory.getLogger("org.gooru.nucleus.etuser.failure");
+    public final static ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(1);
     
     private final Vertx vertx;
 
@@ -28,7 +31,7 @@ public class EmailProcessor {
     }
 
     public void process() {
-        LOGGER.debug("started processing emails");
+/*        LOGGER.debug("started processing emails");
         Set<String> emailIds = getEmailIds();
         emailIds.forEach(email -> {
             LOGGER.info("processing email: {}", email);
@@ -48,10 +51,10 @@ public class EmailProcessor {
             emailRequest.putHeader("Authorization", getAuthorizationHeader());
             emailRequest.write(data.toString());
             emailRequest.end();
-        });
-    }
+        });*/
+    }   
 
-    private JsonObject generateEmailRequest(String email) {
+    /*private JsonObject generateEmailRequest(String email) {
         JsonObject request = ApplicationRegistry.getInstance().getEmailTemplateConfig();
         request.put("email_id", email);
         return request;
@@ -87,5 +90,5 @@ public class EmailProcessor {
 
     private String getAuthorizationHeader() {
         return "Token " + ApplicationRegistry.getInstance().getAuthToken();
-    }
+    }*/
 }

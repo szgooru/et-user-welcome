@@ -1,12 +1,5 @@
 {
-	"api.host": "nucleus-qa.gooru.org",
-	"email.api.endpoint": "/api/nucleus-auth/v1/users/password-reset",
-	"auth.api.endpoint": "/api/nucleus-auth/v1/token",
-	"auth.request": {
-		"client_key": "c2hlZWJhbkBnb29ydWxlYXJuaW5nLm9yZw==",
-		"client_id": "ba956a97-ae15-11e5-a302-f8a963065976",
-		"grant_type": "anonymous"
-	},
+	"email.url": "http://nucleus-qa.gooru.org/api/nucleus-auth/v1/users/password-reset",
 	"email.template.config": {
 		"customize_mail_template": {
 			"mail_template_name": "et_welcome_non_vip",
@@ -14,5 +7,5 @@
 		}
 	},
 	"input.data": "/home/gooru/data/gooru/etusers/internal.txt",
-	"auth.token" : "MTQ3MDExNDEwMDIzODphbm9ueW1vdXM6YmE5NTZhOTctYWUxNS0xMWU1LWEzMDItZjhhOTYzMDY1OTc2"
+	"auth.token" : "MTQ3MDg2OTY1NzA3Mzphbm9ueW1vdXM6YmE5NTZhOTctYWUxNS0xMWU1LWEzMDItZjhhOTYzMDY1OTc2"
 }

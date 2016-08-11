@@ -13,10 +13,7 @@ public class ApplicationRegistry implements Initializer {
     private volatile boolean initialized = false;
     private JsonObject configObject;
     
-    private String apiHost;
-    private String emailAPIEndPoint;
-    private String authAPIEndPoint;
-    private JsonObject authRequest;
+    private String emailUrl;
     private JsonObject emailTemplateConfig;
     private String inputFileName;
     private String authToken;
@@ -38,25 +35,10 @@ public class ApplicationRegistry implements Initializer {
                 LOGGER.debug("Will initialize after double checking");
                 if (!initialized) {
                   this.configObject = config.copy();
-                  
-                  this.apiHost = this.configObject.getString("api.host");
-                  if (this.apiHost == null || this.apiHost.isEmpty()) {
-                      throw new IllegalStateException("API Host not provided");
-                  }
-                  
-                  this.emailAPIEndPoint = this.configObject.getString("email.api.endpoint");
-                  if (this.emailAPIEndPoint == null || this.emailAPIEndPoint.isEmpty()) {
-                      throw new IllegalStateException("Email API Endpoint not provided");
-                  }
-                  
-                  this.authAPIEndPoint = this.configObject.getString("auth.api.endpoint");
-                  if (this.authAPIEndPoint == null || this.authAPIEndPoint.isEmpty()) {
-                      throw new IllegalStateException("Auth API Endpoint not provided");
-                  }
-                  
-                  this.authRequest = this.configObject.getJsonObject("auth.request");
-                  if (this.authRequest == null || this.authRequest.isEmpty()) {
-                      throw new IllegalStateException("Auth request not provided");
+
+                  this.emailUrl = this.configObject.getString("email.url");
+                  if (this.emailUrl == null || this.emailUrl.isEmpty()) {
+                      throw new IllegalStateException("Email URL not provided");
                   }
                   
                   this.emailTemplateConfig = this.configObject.getJsonObject("email.template.config");
@@ -81,20 +63,8 @@ public class ApplicationRegistry implements Initializer {
         }
     }
     
-    public String getAPIHost() {
-        return this.apiHost;
-    }
-    
-    public String getEmailAPIEndpoint() {
-        return this.emailAPIEndPoint;
-    }
-    
-    public String getAuthAPIEndpoint() {
-        return this.authAPIEndPoint;
-    }
-    
-    public JsonObject getAuthRequest() {
-        return this.authRequest;
+    public String getEmailUrl() {
+        return this.emailUrl;
     }
     
     public JsonObject getEmailTemplateConfig() {

@@ -1,20 +1,28 @@
-
 buildscript {
-    repositories { jcenter() }
-    dependencies {
-        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.2"
-    }
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "com.github.jengelman.gradle.plugins:shadow:1.2.2"
+  }
 }
 
 plugins {
-    id 'java' // or 'groovy' Must be explicitly applied
-    id 'com.github.johnrengelman.shadow' version "1.2.2"
+  id 'java' // or 'groovy' Must be explicitly applied
+  id 'com.github.johnrengelman.shadow' version "1.2.2"
+}
+
+
+def localBuildFile = "./build-local.gradle"
+def useLocalBuild = new File(localBuildFile).exists()
+if (useLocalBuild) {
+    apply from : localBuildFile
 }
 
 defaultTasks 'shadowJar'
 
 if (!JavaVersion.current().java8Compatible) {
-    throw new IllegalStateException('''Nucleus:
+  throw new IllegalStateException('''Nucleus:
                                       |  This needs Java 8,
                                       |  You are using something else,
                                       |  Refresh. Try again.'''.stripMargin())
@@ -23,10 +31,14 @@ if (!JavaVersion.current().java8Compatible) {
 // Define a version registry so that we can avoid hard coding of the version numbers
 // Note that this applies only to dependencies and not to the plugins and build
 ext {
-    vertxVersion = '3.2.1'
-    slf4jVersion ='1.7.12'
-    junitVersion = '4.12'
-    logbackVersion = '1.0.13'
+  vertxVersion = '3.2.1'
+  slf4jVersion ='1.7.12'
+  junitVersion = '4.12'
+  logbackVersion = '1.0.13'
+  hikariCPVersion = '2.4.3'
+  postgresVersion = '9.4-1206-jdbc42'
+  redisVersion = '2.8.0'
+  httpclientVersion = '4.3.6'
 }
 
 version = "0.1-snapshot"
@@ -34,19 +46,24 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-    mavenCentral()
-    maven {
-        url = 'https://oss.sonatype.org/content/repositories/snapshots/'
-    }
+  mavenCentral()
+  maven {
+    url = 'http://oss.sonatype.org/content/repositories/snapshots/'
+  }
 }
 
 dependencies {
-    // Vertx specific dependencies
-    compile "io.vertx:vertx-core:${vertxVersion}"
-    compile "io.vertx:vertx-hazelcast:${vertxVersion}"
-
-    // Other dependencies
-    compile "ch.qos.logback:logback-classic:${logbackVersion}"
+  // Vertx specific dependencies
+  compile "io.vertx:vertx-core:${vertxVersion}"
+  compile "io.vertx:vertx-hazelcast:${vertxVersion}"
+  compile "io.vertx:vertx-codegen:${vertxVersion}"
+  
+  // Other dependencies
+  compile "ch.qos.logback:logback-classic:${logbackVersion}"
+  compile "com.zaxxer:HikariCP:${hikariCPVersion}"
+  compile "org.postgresql:postgresql:${postgresVersion}"
+  compile "redis.clients:jedis:${redisVersion}"
+  compile "org.apache.httpcomponents:httpclient:${httpclientVersion}"
 
     // Test dependencies
     testCompile "junit:junit:${junitVersion}"
